@@ -1,0 +1,8 @@
+<div class="block-title">
+  {{yield}}
+</div>
+<div class="block-content">
+  {{#each terms as |term index|}}
+    {{term-item term=term}}
+  {{/each}}
+</div>
