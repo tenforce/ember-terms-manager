@@ -2,5 +2,8 @@
 'use strict';
 
 module.exports = {
-  name: 'terms-manager'
+  name: 'terms-manager',
+  isDevelopingAddon: function() {
+    return true;
+  }
 };

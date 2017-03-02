@@ -1,0 +1,12 @@
+<div class="source-button {{if emptySource "inactive" "active"}}" {{action 'toggleSource'}} title={{tooltip}}>
+  <i class="fa fa-link" id={{buttonId}}></i>
+</div>
+
+{{#if buttonLoaded}}
+  {{#if toggledSource}}
+    {{#tether-dialog close='toggleSource' hasOverlay=true renderInPlace=false clickOutsideToClose=false target=targetButtonId
+    targetAttachment='bottom left' attachment='top left' container-class='term-source'}}
+      {{input value=source enter="toggleSource" class="source-input"}}
+    {{/tether-dialog}}
+  {{/if}}
+{{/if}}

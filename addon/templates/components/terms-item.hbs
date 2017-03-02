@@ -1,0 +1,43 @@
+{{#if displaySource}}
+  {{term-source term=term buttonId=(concat (concat name "-source-") index) toggledSource=toggledSource
+  disabled=disabled disableShortcuts=disableShortcuts}}
+{{/if}}
+
+<div class="input-box">
+  {{input value=term.literalForm class=(concat "tabbable " name) name=(concat name index) placeholder=placeholder disabled=disabled
+  focus-in=(action "focusTerm"  true) focus-out=(action "focusTerm" false) enter=(action "focusTerm" false)}}
+</div>
+
+{{#if (is-pending roles)}}
+  <div class="button-group"><i class="fa fa-spinner fa-pulse"></i></div>
+{{else}}
+  <div class="button-group">
+    {{#each (if roles.then (await roles) roles) as |role roleindex|}}
+      <button tabindex=-1 disabled={{disabled}} {{action 'toggleGender' term role}}
+          class="gender {{if (term-has-role term=term role=role roles=term.roles isReloading=term.isReloading) 'active'}}">
+        {{role.preflabel}}
+      </button>
+    {{/each}}
+  </div>
+{{/if}}
+
+<div class="actions">
+  <button type="button" tabindex=-1 class="save" title="Save field" {{action 'saveTerm'}} disabled={{or disabled (not dirty)}}></button>
+  {{#if term.id}}
+      <button type="button" tabindex=-1 class="cancel" title="Reset field" {{action 'resetTerm'}} disabled={{or disabled (not dirty)}}></button>
+  {{else}}
+    <button type="button" tabindex=-1 class="placeholder" disabled={{true}}></button>
+  {{/if}}
+</div>
+
+{{#if displayDelete}}
+  <button tabindex=-1 class="action remove" {{action 'deleteTerm'}} disabled={{disabled}}>
+    <i class="fa fa-minus"></i>
+  </button>
+{{/if}}
+
+{{#if displaySuggestions}}
+  {{term-suggestions term=term suggestions=suggestions buttonId=(concat (concat name "-suggestions-") index)
+  toggledSuggestions=toggledSuggestions disabled=disabled selectSuggestion="selectSuggestion"}}
+{{/if}}
+

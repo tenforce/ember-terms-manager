@@ -1,0 +1,5 @@
+{{#if suggestions}}
+  {{#each suggestions as |suggestion index|}}
+    {{suggestions-item source=suggestion.attributes.source translations=suggestion.attributes.translations selectSuggestion="selectSuggestion"}}
+  {{/each}}
+{{/if}}

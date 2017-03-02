@@ -1,0 +1,18 @@
+<div class="block-title">
+  {{yield}}
+</div>
+<div class="block-content">
+  {{#each (if terms.then (await terms) terms) as |term index|}}
+    {{terms-item term=term index=index roles=roles name=name suggestions=suggestions displaySource=displaySource placeholder=placeholder
+    displayDelete=displayDelete displaySuggestions=displaySuggestions toggleGender="toggleGender" savedTerm="savedTerm"
+    deletedTerm="deletedTerm"}}
+  {{!term-item term=term concept=concept prefTerms=prefTerms altTerms=altTerms roles=roles allowDelete=tooManyPrefTerms index=index
+  sourceLanguage=sourceLanguage targetLanguage=targetLanguage translationDisabled=translationDisabled savePrefTerm="savePrefTerm"
+  removePrefTerm="removePrefTerm" saveSource="saveSource" displaySuggestions=(and displaySuggestions (not tooManyPrefTerms)) showQuest=showQuest
+  showSource=showSource disableShortcuts=disableShortcuts}}
+  {{/each}}
+  {{#if displayNewTerm}}
+    {{terms-item term=newTerm index="new" roles=roles name=name suggestions=suggestions displaySource=displayNewSource placeholder=newPlaceholder
+    displayDelete=displayNewDelete displaySuggestions=displayNewSuggestions toggleGender="toggleGender" savedTerm="savedNewTerm"}}
+  {{/if}}
+</div>
