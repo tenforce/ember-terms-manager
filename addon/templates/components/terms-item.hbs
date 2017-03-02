@@ -1,0 +1,14 @@
+{{#if displaySource}}
+  <div class="source">
+    {{terms-item-source term=term buttonId=(concat (concat name "-source-") index) toggledSource=toggledSource
+    disabled=disabled disableShortcuts=disableShortcuts}}
+  </div>
+{{/if}}
+
+{{if term.dirty "dirty" "not dirty"}}
+
+<div class="input-box">
+  {{input value=term.literalForm class=(concat "tabbable " name) name=(concat name index) focus-in=(action "focusTerm" true) focus-out=(action
+  "focusTerm" false)}}
+</div>
+

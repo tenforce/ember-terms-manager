@@ -1,0 +1,14 @@
+<div class="block">
+  <div class="block-title">
+    {{yield}}
+  </div>
+  <div class="block-content">
+    {{#each terms as |term index|}}
+      {{terms-item term=term index=index name=name displaySource=displaySource}}
+    {{!term-item term=term concept=concept prefTerms=prefTerms altTerms=altTerms roles=roles allowDelete=tooManyPrefTerms index=index
+    sourceLanguage=sourceLanguage targetLanguage=targetLanguage translationDisabled=translationDisabled savePrefTerm="savePrefTerm"
+    removePrefTerm="removePrefTerm" saveSource="saveSource" displaySuggestions=(and displaySuggestions (not tooManyPrefTerms)) showQuest=showQuest
+    showSource=showSource disableShortcuts=disableShortcuts}}
+    {{/each}}
+  </div>
+</div>
