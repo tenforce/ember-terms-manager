@@ -6,6 +6,10 @@ TermsListComponent = Ember.Component.extend(
   classNames: ['block']
 
   displaySource: true
+
+  actions:
+    toggleGender: (term, role, name) ->
+      @sendAction('toggleGender', term, role, name)
 )
 
 `export default TermsListComponent`

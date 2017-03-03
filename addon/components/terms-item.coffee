@@ -17,17 +17,25 @@ TermsItemComponent = Ember.Component.extend(
   toggledSource: false
 
   # is-pending not working so we do it the old way
-  loadingRoles: true
-  checkLoadingRoles: Ember.observer('term.id', 'term.roles', ->
-    @set 'loadingRoles', true
+  loadingTermRoles: true
+  checkLoadingTermRoles: Ember.observer('term.id', 'term.roles', ->
+    @set 'loadingTermRoles', true
     if @get('term')
       @get('term.roles').then =>
-        @set 'loadingRoles', false
+        @set 'loadingTermRoles', false
+  ).on('init')
+
+  checkLoadingRoles: Ember.observer('roles', ->
+    @set 'loadingRoles', true
+    @get('roles')?.then =>
+      @set 'loadingRoles', false
   ).on('init')
 
   actions:
     focusTerm: (bool) ->
       @set('focused', bool)
+    toggleGender: (term, role, name) ->
+      @sendAction('toggleGender', term, role, name)
     handleEnter: (term) ->
       #debugger
       # TODO : Handle

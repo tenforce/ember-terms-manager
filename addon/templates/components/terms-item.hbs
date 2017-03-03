@@ -12,26 +12,16 @@
   focus-out=(action "focusTerm" false) enter=(action "handleEnter" term)}}
 </div>
 
-{{#if loadingRoles}}
+{{#if (or (is-pending roles) loadingTermRoles)}}
   <div class="button-group"><i class="fa fa-spinner fa-pulse"></i></div>
 {{else}}
   <div class="button-group">
     {{#if term.id}}
-      <button tabindex=-1 disabled= {{translationDisabled}} class="gender preferred {{if term.preferredMale 'active'}}" {{action 'toggleStandardMale' term}}>
-        standard male
-      </button>
-      <button tabindex=-1 disabled= {{translationDisabled}} class="gender preferred {{if term.preferredFemale 'active'}}" {{action 'toggleStandardFemale' term}}>
-        standard female
-      </button>
-      <button tabindex=-1 disabled= {{translationDisabled}} class="gender {{if term.male 'active'}}" {{action 'toggleMale' term}}>
-        male
-      </button>
-      <button tabindex=-1 disabled= {{translationDisabled}} class="gender {{if term.female 'active'}}" {{action 'toggleFemale' term}}>
-        female
-      </button>
-      <button tabindex=-1 disabled= {{translationDisabled}} class="gender {{if term.neutral 'active'}}" {{action 'toggleNeutral' term}}>
-        neutral
-      </button>
+      {{#each (if roles.then (await roles) roles) as |role index|}}
+        <button tabindex=-1 disabled={{translationDisabled}} class="gender {{if (term-has-role term=term role=role) 'active'}}" {{action 'toggleGender' term role name}}>
+          {{role.preflabel}}
+        </button>
+      {{/each}}
     {{/if}}
   </div>
 {{/if}}
