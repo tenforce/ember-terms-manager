@@ -16,9 +16,22 @@ TermsItemComponent = Ember.Component.extend(
   # boolean to toggle / untoggle sources
   toggledSource: false
 
+  # is-pending not working so we do it the old way
+  loadingRoles: true
+  checkLoadingRoles: Ember.observer('term.id', 'term.roles', ->
+    @set 'loadingRoles', true
+    if @get('term')
+      @get('term.roles').then =>
+        @set 'loadingRoles', false
+  ).on('init')
+
   actions:
     focusTerm: (bool) ->
       @set('focused', bool)
+    handleEnter: (term) ->
+      #debugger
+      # TODO : Handle
+      console.log "Enter pressed"
 )
 
 `export default TermsItemComponent`
