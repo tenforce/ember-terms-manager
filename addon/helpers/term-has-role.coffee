@@ -1,5 +1,7 @@
 `import Ember from 'ember'`
 
+# NB : 'term.roles' are passed as a parameter because the helper would not recompute otherwise...
+
 # This function receives the params `params, hash`
 termHasRole = (params, namedArgs) ->
   # this helper checks whether the term has the specified role

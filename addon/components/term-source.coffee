@@ -1,13 +1,19 @@
 `import Ember from 'ember'`
-`import layout from '../templates/components/terms-item-source'`
+`import layout from '../templates/components/term-source'`
 
-TermsItemSourceComponent = Ember.Component.extend(
+TermSourceComponent = Ember.Component.extend(
   layout: layout
 
   classNames: ['source']
   classNameBindings: ['emptySource:inactive:active']
 
-  source: Ember.computed.alias 'term.source'
+  source: Ember.computed 'term.source',
+    get: (key) ->
+      @get('term.source')
+    set: (key, value) ->
+      if value is "" then value = undefined
+      @set('term.source', value)
+      return value
   emptySource: Ember.computed 'source', ->
     if @get('source.length') > 0 then return false
     return true
@@ -32,4 +38,4 @@ TermsItemSourceComponent = Ember.Component.extend(
           $('.source-input')?[0]?.focus()
 )
 
-`export default TermsItemSourceComponent`
+`export default TermSourceComponent`

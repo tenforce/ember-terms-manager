@@ -1,27 +1,43 @@
 {{#if displaySource}}
-  <div class="source">
-    {{terms-item-source term=term buttonId=(concat (concat name "-source-") index) toggledSource=toggledSource
-    disabled=disabled disableShortcuts=disableShortcuts}}
-  </div>
+  {{term-source term=term buttonId=(concat (concat name "-source-") index) toggledSource=toggledSource
+  disabled=disabled disableShortcuts=disableShortcuts}}
 {{/if}}
 
 {{if term.dirty "dirty" "not dirty"}}
 
 <div class="input-box">
   {{input value=term.literalForm class=(concat "tabbable " name) name=(concat name index) focus-in=(action "focusTerm" true)
-  focus-out=(action "focusTerm" false) enter=(action "handleEnter" term)}}
+  focus-out=(action "focusTerm" false) enter=(action "saveTerm" term)}}
 </div>
 
-{{#if (or (is-pending roles) loadingTermRoles)}}
+{{#if (is-pending roles)}}
   <div class="button-group"><i class="fa fa-spinner fa-pulse"></i></div>
 {{else}}
   <div class="button-group">
-    {{#if term.id}}
-      {{#each (if roles.then (await roles) roles) as |role index|}}
-        <button tabindex=-1 disabled={{translationDisabled}} class="gender {{if (term-has-role term=term role=role) 'active'}}" {{action 'toggleGender' term role name}}>
-          {{role.preflabel}}
-        </button>
-      {{/each}}
-    {{/if}}
+    {{#each (if roles.then (await roles) roles) as |role roleindex|}}
+      {{#if (term-has-role term=term role=role roles=term.roles)}}ACTIVE <= {{/if}}
+      <button tabindex=-1 disabled={{translationDisabled}} {{action 'toggleGender' term role}}
+          class="gender {{if (term-has-role term=term role=role roles=term.roles isReloading=term.isReloading) 'active'}}">
+        {{role.preflabel}}
+      </button>
+    {{/each}}
   </div>
 {{/if}}
+
+<div class="actions">
+  <button type="button" tabindex=-1 class="save" title="Save field" {{action 'saveTerm'}} disabled={{not (or disabled dirty)}}>save</button>
+  {{#if term.id}}
+      <button type="button" tabindex=-1 class="cancel" title="Reset field" {{action 'resetTerm'}} disabled={{not (or disabled dirty)}}>reset</button>
+  {{/if}}
+</div>
+
+{{#unless disableDelete}}
+  <button tabindex=-1 class="action remove" {{action 'deleteTerm'}}>
+    <i class="fa fa-minus">delete</i>
+  </button>
+{{/unless}}
+
+{{#if displaySuggestions}}
+  {{term-suggestions term=term suggestions=suggestions buttonId=(concat (concat name "-suggestions-") index) toggledSuggestions=toggledSuggestions disabled=disabled}}
+{{/if}}
+
