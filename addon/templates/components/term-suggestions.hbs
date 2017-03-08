@@ -6,7 +6,7 @@
   {{#if toggledSuggestions}}
     {{#tether-dialog close='toggleSuggestions' hasOverlay=true renderInPlace=false clickOutsideToClose=false target=targetButtonId
     targetAttachment='bottom left' attachment='top right' container-class='term-suggestions'}}
-      {{suggestions-list suggestions=suggestions}}
+      {{suggestions-list suggestions=suggestions selectSuggestion="selectSuggestion"}}
     {{/tether-dialog}}
   {{/if}}
 {{/if}}

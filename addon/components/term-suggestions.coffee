@@ -20,6 +20,13 @@ TermSuggestionsComponent = Ember.Component.extend(
   actions:
     toggleSuggestions: ->
       @toggleProperty('toggledSuggestions')
+      if @get('toggledSuggestions')
+        # nothing to do
+      else
+        Ember.run.later =>
+          @$('').closest('.term')?.children('.input-box')?.children('input')?.focus()
+    selectSuggestion: (translation) ->
+      @sendAction('selectSuggestion', translation)
 )
 
 `export default TermSuggestionsComponent`

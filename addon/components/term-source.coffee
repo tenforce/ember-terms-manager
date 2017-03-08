@@ -36,6 +36,9 @@ TermSourceComponent = Ember.Component.extend(
       if @get('toggledSource')
         Ember.run.later =>
           $('.source-input')?[0]?.focus()
+      else
+        Ember.run.later =>
+          @$('').closest('.term')?.children('.input-box')?.children('input')?.focus()
 )
 
 `export default TermSourceComponent`

@@ -38,6 +38,7 @@
 {{/unless}}
 
 {{#if displaySuggestions}}
-  {{term-suggestions term=term suggestions=suggestions buttonId=(concat (concat name "-suggestions-") index) toggledSuggestions=toggledSuggestions disabled=disabled}}
+  {{term-suggestions term=term suggestions=suggestions buttonId=(concat (concat name "-suggestions-") index)
+  toggledSuggestions=toggledSuggestions disabled=disabled selectSuggestion="selectSuggestion"}}
 {{/if}}
 

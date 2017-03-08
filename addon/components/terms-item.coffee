@@ -33,6 +33,8 @@ TermsItemComponent = Ember.Component.extend(
 
 
   actions:
+    selectSuggestion: (suggestion) ->
+      @set('term.literalForm', "#{@get('term.literalForm')}#{suggestion}")
     focusTerm: (bool) ->
       @set('focused', bool)
     toggleGender: (term, role) ->
@@ -40,7 +42,6 @@ TermsItemComponent = Ember.Component.extend(
       index = @get('index')
       @sendAction('toggleGender', term, role, name, index)
     saveTerm:  ->
-      #debugger
       # TODO : Handle
       term = @get('term')
       name = @get('name')
