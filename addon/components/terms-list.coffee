@@ -23,6 +23,10 @@ TermsListComponent = Ember.Component.extend(
   displayNewDelete: false
   displayNewSuggestions: true
 
+  # placeholders, can be overriden
+  placeholder: "e.g., \"actress//sf\" and confirm with ENTER"
+  newPlaceholder: "e.g., \"actress//sf\" and confirm with ENTER"
+
 
   actions:
     toggleGender: (term, role, name, index) ->

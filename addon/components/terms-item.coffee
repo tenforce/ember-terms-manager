@@ -10,9 +10,9 @@ TermsItemComponent = Ember.Component.extend(
   disabled: false
   # whether shortcuts are disabled
   disableShortcuts: false
-  # whether the delete button should be disabled
-  disableDelete: false
 
+  # whether the delete button should be disabled
+  displayDelete: true
   # whether the source component should be displayed
   displaySource: true
   # boolean to toggle / untoggle sources
@@ -31,23 +31,59 @@ TermsItemComponent = Ember.Component.extend(
       console.warn "Term model does not seem to have a 'dirty' property"
       return false
 
+  parseRolesFromString: (term) ->
+    array = []
+    literalform = term.get('literalForm')
+    split = literalform.split('//', -1)
+    genders = split[1]
+
+    term.set('literalForm', split[0].trim())
+    if genders is undefined or genders.trim().length is 0
+      return new Ember.RSVP.Promise =>
+        return []
+
+    if genders.indexOf("sm") >= 0 then array.push('standard male term')
+    else if genders.indexOf("m") >= 0 then array.push('male')
+
+    if genders.indexOf("sf") >= 0 then array.push('standard female term')
+    else if genders.indexOf("f") >= 0 then array.push('female')
+
+    if genders.indexOf("none") >= 0 then array.push('none')
+    else if genders.indexOf("n") >= 0 then array.push('neutral')
+
+    if array.length > 0
+      console.log "removing all roles from term : #{term.get('id')}"
+      term.set('roles', [])
+    else return new Ember.RSVP.Promise =>
+      return []
+
+    @get('roles')?.then (roles) =>
+      roles.forEach (role) =>
+        if array.contains(role.get('preflabel')) then @sendAction('toggleGender', term, role)
 
   actions:
     selectSuggestion: (suggestion) ->
+      if @get('disabled') then return false
       @set('term.literalForm', "#{@get('term.literalForm')}#{suggestion}")
     focusTerm: (bool) ->
       @set('focused', bool)
+      if @get('disabled') then return false
+      if bool is false
+        @parseRolesFromString(@get('term'))
     toggleGender: (term, role) ->
+      if @get('disabled') then return false
       name = @get('name')
       index = @get('index')
       @sendAction('toggleGender', term, role, name, index)
     saveTerm:  ->
+      if @get('disabled') then return false
       # TODO : Handle
       term = @get('term')
       name = @get('name')
       index = @get('index')
+
       console.log "Handle saving of term"
-      if @get('disabled') then return false
+
       term.save().then( (savedTerm) =>
         unless @get('isDestroyed')
           console.log "success on save"
@@ -63,22 +99,22 @@ TermsItemComponent = Ember.Component.extend(
         throw error
       )
     resetTerm:  ->
+      if @get('disabled') then return false
       # TODO : Handle
       term = @get('term')
       name = @get('name')
       index = @get('index')
       console.log "Handle reset of term"
-      if @get('disabled') then return false
       term.reload()
       #term.reload().then (newterm) =>
         #@set('term', newterm)
     deleteTerm: ->
+      if @get('disabled') then return false
       term = @get('term')
       name = @get('name')
       index = @get('index')
       # TODO : Handle, maybe "grey out" the term
       console.log "Handle deletion of term"
-      if @get('disabled') then return false
       term.deleteRecord()
 
 )

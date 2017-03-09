@@ -4,7 +4,8 @@
 TermSuggestionsComponent = Ember.Component.extend(
   layout: layout
 
-  classNames: ['suggestions']
+  tagName: ''
+  #classNames: ['suggestions']
 
   tooltip: "See suggestions for this term"
 
