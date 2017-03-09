@@ -31,11 +31,11 @@
   {{/if}}
 </div>
 
-{{#unless disableDelete}}
+{{#if displayDelete}}
   <button tabindex=-1 class="action remove" {{action 'deleteTerm'}}>
     <i class="fa fa-minus">delete</i>
   </button>
-{{/unless}}
+{{/if}}
 
 {{#if displaySuggestions}}
   {{term-suggestions term=term suggestions=suggestions buttonId=(concat (concat name "-suggestions-") index)

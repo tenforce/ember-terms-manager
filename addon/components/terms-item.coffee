@@ -4,7 +4,7 @@
 TermsItemComponent = Ember.Component.extend(
   layout: layout
   classNames: ['term']
-  classNameBindings: ['focused:focus', 'dirty', 'term.isDeleted:deleted']
+  classNameBindings: ['focused:focus', 'dirty', 'term.isDeleted:deleted', 'term.isNew:new']
 
   # whether changes are allowed
   disabled: false
