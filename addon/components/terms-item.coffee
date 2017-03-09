@@ -4,7 +4,7 @@
 TermsItemComponent = Ember.Component.extend(
   layout: layout
   classNames: ['term']
-  classNameBindings: ['focused:focus', 'dirty', 'term.isDeleted:deleted', 'term.isNew:new']
+  classNameBindings: ['focused:focus', 'dirty', 'term.isDeleted:deleted', 'term.isNew:new', 'term.isSaved:saved', 'term.isLoading:loading']
 
   # whether changes are allowed
   disabled: false
@@ -61,6 +61,53 @@ TermsItemComponent = Ember.Component.extend(
       roles.forEach (role) =>
         if array.contains(role.get('preflabel')) then @sendAction('toggleGender', term, role)
 
+  saveAllButton: Ember.inject.service()
+  init: ->
+    @_super()
+    @get('saveAllButton').subscribe(@)
+
+  saveAllClick: ->
+    @saveTerm()
+
+  saveTerm: ->
+    if @get('disabled') then return false
+    if @get('term.literalForm.length') is 0
+      console.log "can not save empty term"
+      return false
+    # TODO : Handle
+    term = @get('term')
+    name = @get('name')
+    index = @get('index')
+
+    console.log "Handle saving of term"
+    @set('isSaved', false)
+    term.save().then( (savedTerm) =>
+      unless @get('isDestroyed')
+        console.log "success on save"
+        @set('isSaved', true)
+        if savedTerm.get('isDeleted')
+          @sendAction('deletedTerm', savedTerm, name, index)
+        else
+          @sendAction('savedTerm', savedTerm, name, index)
+    ).catch( (error) =>
+      console.log "model failure on save"
+      unless @get('isDestroyed')
+        console.log "failed to save"
+        @set('isSaved', false)
+      throw error
+    )
+
+  resetAllClick: ->
+    @resetTerm()
+  resetTerm: ->
+    if @get('disabled') then return false
+    # TODO : Handle
+    term = @get('term')
+    name = @get('name')
+    index = @get('index')
+    console.log "Handle reset of term"
+    if term.get('id') then term.reload()
+
   actions:
     selectSuggestion: (suggestion) ->
       if @get('disabled') then return false
@@ -76,38 +123,9 @@ TermsItemComponent = Ember.Component.extend(
       index = @get('index')
       @sendAction('toggleGender', term, role, name, index)
     saveTerm:  ->
-      if @get('disabled') then return false
-      # TODO : Handle
-      term = @get('term')
-      name = @get('name')
-      index = @get('index')
-
-      console.log "Handle saving of term"
-
-      term.save().then( (savedTerm) =>
-        unless @get('isDestroyed')
-          console.log "success on save"
-          @set('saveStatus', "success")
-          if savedTerm.get('isDeleted')
-            @sendAction('deletedTerm', savedTerm, name, index)
-          else
-            @sendAction('savedTerm', savedTerm, name, index)
-      ).catch( (error) =>
-        console.log "model failure on save"
-        unless @get('isDestroyed')
-          @set('saveStatus', "failure")
-        throw error
-      )
+      @saveTerm()
     resetTerm:  ->
-      if @get('disabled') then return false
-      # TODO : Handle
-      term = @get('term')
-      name = @get('name')
-      index = @get('index')
-      console.log "Handle reset of term"
-      term.reload()
-      #term.reload().then (newterm) =>
-        #@set('term', newterm)
+      @resetTerm()
     deleteTerm: ->
       if @get('disabled') then return false
       term = @get('term')
