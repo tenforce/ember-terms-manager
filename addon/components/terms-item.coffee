@@ -4,7 +4,7 @@
 TermsItemComponent = Ember.Component.extend(
   layout: layout
   classNames: ['term']
-  classNameBindings: ['focused:focus', 'dirty', 'term.isDeleted:deleted', 'term.isNew:new', 'term.isSaved:saved', 'term.isLoading:loading']
+  classNameBindings: ['focused:focus', 'dirtyOrNew', 'term.isDeleted:deleted', 'term.isSaved:saved', 'term.isLoading:loading']
 
   # whether changes are allowed
   disabled: false
@@ -30,6 +30,9 @@ TermsItemComponent = Ember.Component.extend(
     else
       console.warn "Term model does not seem to have a 'dirty' property"
       return false
+  dirtyOrNew: Ember.computed 'dirty', 'term.isNew', ->
+    if @get('term.isNew') then return "new"
+    else if @get('dirty') then return "dirty"
 
   parseRolesFromString: (term) ->
     array = []
