@@ -3,10 +3,10 @@
   {{#each (if terms.then (await terms) terms) as |term index|}}
     {{terms-item term=term index=index roles=roles name=name suggestions=suggestions displaySource=displaySource placeholder=placeholder
     displayDelete=displayDelete displaySuggestions=displaySuggestions toggleGender="toggleGender" savedTerm="savedTerm"
-    deletedTerm="deletedTerm"}}
+    deletedTerm="deletedTerm" disabled=disabled}}
   {{/each}}
   {{#if displayNewTerm}}
     {{terms-item term=newTerm index="new" roles=roles name=name suggestions=suggestions displaySource=displayNewSource placeholder=newPlaceholder
-    displayDelete=displayNewDelete displaySuggestions=displayNewSuggestions toggleGender="toggleGender" savedTerm="savedNewTerm"}}
+    displayDelete=displayNewDelete displaySuggestions=displayNewSuggestions toggleGender="toggleGender" savedTerm="savedNewTerm" disabled=disabled}}
   {{/if}}
 </div>
