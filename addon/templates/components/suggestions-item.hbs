@@ -9,7 +9,7 @@
         <span>{{translation.term}}</span>
         <ul>
           {{#each translation.translations_for_term as |result|}}
-            <li class="translation" {{action 'selectSuggestion' result.translation}}>{{result.translation}}</li>
+            <li class="translation{{if disabled " disabled"}}" disabled={{disabled}} {{action 'selectSuggestion' result.translation}}>{{result.translation}}</li>
           {{/each}}
         </ul>
       </li>

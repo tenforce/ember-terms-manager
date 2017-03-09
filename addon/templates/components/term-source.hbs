@@ -6,7 +6,7 @@
   {{#if toggledSource}}
     {{#tether-dialog close='toggleSource' hasOverlay=true renderInPlace=false clickOutsideToClose=false target=targetButtonId
     targetAttachment='bottom left' attachment='top left' container-class='term-source'}}
-      {{input value=source enter="toggleSource" class="source-input"}}
+      {{input value=source enter="toggleSource" class="source-input" disabled=disabled}}
     {{/tether-dialog}}
   {{/if}}
 {{/if}}

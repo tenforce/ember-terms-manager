@@ -7,6 +7,7 @@ SuggestionsItemComponent = Ember.Component.extend
   collapsed: true
   actions:
     selectSuggestion: (translation) ->
+      if @get('disabled') then return false
       @sendAction('selectSuggestion', translation)
     toggleCollapsed:  ->
       @toggleProperty("collapsed")

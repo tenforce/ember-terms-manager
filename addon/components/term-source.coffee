@@ -18,6 +18,7 @@ TermSourceComponent = Ember.Component.extend(
     if @get('source.length') > 0 then return false
     return true
   tooltip: Ember.computed 'emptySource', ->
+    if @get('disabled') then return "See source for this term"
     if @get('emptySource') then return "Add a source for this term"
     else return "Modify source for this term"
 
@@ -33,6 +34,7 @@ TermSourceComponent = Ember.Component.extend(
   actions:
     toggleSource: ->
       @toggleProperty('toggledSource')
+      if @get('disabled') then return false
       if @get('toggledSource')
         Ember.run.later =>
           $('.source-input')?[0]?.focus()
