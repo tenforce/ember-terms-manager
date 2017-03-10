@@ -39,8 +39,7 @@ TermSourceComponent = Ember.Component.extend(
         Ember.run.later =>
           $('.source-input')?[0]?.focus()
       else
-        Ember.run.later =>
-          @$('').closest('.term')?.children('.input-box')?.children('input')?.focus()
+        @sendAction('closing')
 )
 
 `export default TermSourceComponent`

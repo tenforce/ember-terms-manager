@@ -138,6 +138,10 @@ TermsItemComponent = Ember.Component.extend(
       console.log "Handle deletion of term"
       term.deleteRecord()
 
+    focusInput: ->
+      Ember.run.later =>
+        @$('.input-box')?.children('input')?.focus()
+
 )
 
 `export default TermsItemComponent`
