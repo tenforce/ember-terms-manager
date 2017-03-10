@@ -48,7 +48,6 @@ TermsItemComponent = Ember.Component.extend
     else return @get('displayActionsTerm')
   displayActionsTerm: Ember.computed.alias 'dirty'
   displayActionsNewTerm: Ember.computed 'term.literalForm.length', ->
-    debugger
     if @get('term.literalForm.length') > 0 then return true
     return false
 
@@ -82,43 +81,39 @@ TermsItemComponent = Ember.Component.extend
       roles.forEach (role) =>
         if array.contains(role.get('preflabel')) then @sendAction('toggleGender', term, role)
 
+
   saveAllClick: ->
-    @saveTerm()
-
-  saveTerm: ->
-    if @get('disabled') then return false
-    if @get('term.literalForm.length') is 0
-      console.log "can not save empty term"
-      return false
-    # TODO : Handle
-    term = @get('term')
-    name = @get('name')
-    index = @get('index')
-
-    console.log "Handle saving of term"
-    term.save().then( (savedTerm) =>
-      unless @get('isDestroyed')
-        console.log "success on save"
-        if savedTerm.get('isDeleted')
-          @sendAction('deletedTerm', savedTerm, name, index)
-        else
-          @sendAction('savedTerm', savedTerm, name, index)
-    )
-
+    @handleSaveTerm()
   resetAllClick: ->
-    @resetTerm()
-  resetTerm: ->
+    @handleRollbackTerm()
+
+  handleSaveTerm: () ->
     if @get('disabled') then return false
-    # TODO : Handle
     term = @get('term')
     name = @get('name')
     index = @get('index')
-    console.log "Handle reset of term"
-    if term.get('id') then term.reload()
-    else
-      term.set('literalForm', '')
-      term.set('roles', [])
-      term.set('source', undefined)
+    @sendAction('saveTerm', term, name, index)
+
+  handleRollbackTerm: () ->
+    if @get('disabled') then return false
+    term = @get('term')
+    name = @get('name')
+    index = @get('index')
+    @sendAction('rollbackTerm', term, name, index)
+
+  handleDeleteTerm: () ->
+    if @get('disabled') then return false
+    term = @get('term')
+    name = @get('name')
+    index = @get('index')
+    @sendAction('deleteTerm', term, name, index)
+
+  handleToggleGender: (role) ->
+    if @get('disabled') then return false
+    term = @get('term')
+    name = @get('name')
+    index = @get('index')
+    @sendAction('toggleGender', term, role, name, index)
 
   saveAllButton: Ember.inject.service()
   init: ->
@@ -147,23 +142,14 @@ TermsItemComponent = Ember.Component.extend
       if @get('disabled') then return false
       if bool is false
         @parseRolesFromString(@get('term'))
-    toggleGender: (term, role) ->
-      if @get('disabled') then return false
-      name = @get('name')
-      index = @get('index')
-      @sendAction('toggleGender', term, role, name, index)
+    toggleGender: (role) ->
+      @handleToggleGender(role)
     saveTerm:  ->
-      @saveTerm()
-    resetTerm:  ->
-      @resetTerm()
+      @handleSaveTerm()
+    rollbackTerm:  ->
+      @handleRollbackTerm()
     deleteTerm: ->
-      if @get('disabled') then return false
-      term = @get('term')
-      name = @get('name')
-      index = @get('index')
-      # TODO : Handle, maybe "grey out" the term
-      console.log "Handle deletion of term"
-      term.deleteRecord()
+      @handleDeleteTerm()
 
     focusInput: ->
       Ember.run.later =>

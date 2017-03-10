@@ -13,7 +13,7 @@
 {{else}}
   <div class="button-group">
     {{#each (if roles.then (await roles) roles) as |role roleindex|}}
-      <button tabindex=-1 disabled={{shouldDisable}} {{action 'toggleGender' term role}}
+      <button tabindex=-1 disabled={{shouldDisable}} {{action 'toggleGender' role}}
           class="gender {{if (term-has-role term=term role=role roles=term.roles isReloading=term.isReloading) 'active'}}">
         {{role.preflabel}}
       </button>
@@ -24,7 +24,7 @@
 {{#if saveable}}
   <div class="actions">
     <button type="button" tabindex=-1 class="save" title="Save field" {{action 'saveTerm'}} disabled={{shouldDisable}}></button>
-    <button type="button" tabindex=-1 class="cancel" title="Reset field" {{action 'resetTerm'}} disabled={{shouldDisable}}></button>
+    <button type="button" tabindex=-1 class="cancel" title="Reset field" {{action 'rollbackTerm'}} disabled={{shouldDisable}}></button>
   </div>
 {{/if}}
 

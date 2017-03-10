@@ -32,12 +32,14 @@ TermsListComponent = Ember.Component.extend(
   actions:
     toggleGender: (term, role, name, index) ->
       @sendAction('toggleGender', term, role, name, index)
-    savedTerm: (term, name, index) ->
-      @sendAction('savedTerm', term, name, index)
-    deletedTerm: (term, name, index) ->
-      @sendAction('deletedTerm', term, name, index)
-    savedNewTerm: (term, name, index) ->
-      @sendAction('savedNewTerm', term, name, index)
+    rollbackTerm: (term, name, index) ->
+      @sendAction('rollbackTerm', term, name, index)
+    saveTerm: (term, name, index) ->
+      @sendAction('saveTerm', term, name, index)
+    deleteTerm: (term, name, index) ->
+      @sendAction('deleteTerm', term, name, index)
+    saveNewTerm: (term, name, index) ->
+      @sendAction('saveNewTerm', term, name, index)
 )
 
 `export default TermsListComponent`
