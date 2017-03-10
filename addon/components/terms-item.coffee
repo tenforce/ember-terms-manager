@@ -1,14 +1,20 @@
 `import Ember from 'ember'`
 `import layout from '../templates/components/terms-item'`
 
-TermsItemComponent = Ember.Component.extend(
+TermsItemComponent = Ember.Component.extend
   layout: layout
   classNames: ['term']
   classNameBindings: ['focused:focus', 'dirtyOrNew', 'term.isDeleted:deleted', 'savedAndNotDirty:saved',
-    'term.failedSave:failed', 'term.failedReload:failed', 'term.isLoading:loading']
+    'term.failedSave:failed', 'term.failedReload:failed', 'term.isLoading:loading', 'nameIndex']
+  nameIndex: Ember.computed 'name', 'index', ->
+    return "#{@get('name')}#{@get('index')}"
 
   # whether changes are allowed
   disabled: false
+  shouldDisable: Ember.computed 'loading', 'disabled', ->
+    return @get('disabled') or @get('loading')
+  loading: Ember.computed 'loadingRoles', ->
+    return @get('loadingRoles')
   # whether shortcuts are disabled
   disableShortcuts: false
 
@@ -76,11 +82,6 @@ TermsItemComponent = Ember.Component.extend(
       roles.forEach (role) =>
         if array.contains(role.get('preflabel')) then @sendAction('toggleGender', term, role)
 
-  saveAllButton: Ember.inject.service()
-  init: ->
-    @_super()
-    @get('saveAllButton').subscribe(@)
-
   saveAllClick: ->
     @saveTerm()
 
@@ -119,6 +120,24 @@ TermsItemComponent = Ember.Component.extend(
       term.set('roles', [])
       term.set('source', undefined)
 
+  saveAllButton: Ember.inject.service()
+  init: ->
+    @_super()
+    @get('saveAllButton').subscribe(@)
+    @ensureLoadedRoles()
+
+  loadingRoles: true
+  ensureLoadedRoles: ->
+    @set('loadingRoles', true)
+    roles = @get('roles')
+    unless roles
+      @set('loadingRoles', false)
+      return
+    if roles.then
+      roles.then () =>
+        @set('loadingRoles', false)
+    else @set('loadingRoles', false)
+
   actions:
     selectSuggestion: (suggestion) ->
       if @get('disabled') then return false
@@ -150,6 +169,5 @@ TermsItemComponent = Ember.Component.extend(
       Ember.run.later =>
         @$('.input-box')?.children('input')?.focus()
 
-)
 
 `export default TermsItemComponent`

@@ -3,7 +3,8 @@
 
 TermsListComponent = Ember.Component.extend(
   layout: layout
-  classNames: ['block']
+  classNames: ['block', 'list']
+  classNameBindings: ['name']
 
   store: Ember.inject.service('store')
 
