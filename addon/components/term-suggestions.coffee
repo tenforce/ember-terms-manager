@@ -24,8 +24,7 @@ TermSuggestionsComponent = Ember.Component.extend(
       if @get('toggledSuggestions')
         # nothing to do
       else
-        Ember.run.later =>
-          @$('').closest('.term')?.children('.input-box')?.children('input')?.focus()
+        @sendAction('closing')
     selectSuggestion: (translation) ->
       @sendAction('selectSuggestion', translation)
 )

@@ -1,6 +1,6 @@
 {{#if displaySource}}
   {{term-source term=term buttonId=(concat (concat name "-source-") index) toggledSource=toggledSource
-  disabled=disabled disableShortcuts=disableShortcuts}}
+  disabled=disabled disableShortcuts=disableShortcuts closing="focusInput"}}
 {{/if}}
 
 <div class="input-box">
@@ -38,6 +38,6 @@
 
 {{#if displaySuggestions}}
   {{term-suggestions term=term suggestions=suggestions buttonId=(concat (concat name "-suggestions-") index)
-  toggledSuggestions=toggledSuggestions disabled=disabled selectSuggestion="selectSuggestion"}}
+  toggledSuggestions=toggledSuggestions disabled=disabled selectSuggestion="selectSuggestion" closing="focusInput"}}
 {{/if}}
 
