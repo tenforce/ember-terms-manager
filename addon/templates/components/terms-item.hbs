@@ -21,14 +21,13 @@
   </div>
 {{/if}}
 
-<div class="actions">
-  <button type="button" tabindex=-1 class="save" title="Save field" {{action 'saveTerm'}} disabled={{or disabled (not dirty)}}></button>
-  {{#if term.id}}
-      <button type="button" tabindex=-1 class="cancel" title="Reset field" {{action 'resetTerm'}} disabled={{or disabled (not dirty)}}></button>
-  {{else}}
-    <button type="button" tabindex=-1 class="placeholder" disabled=true></button>
-  {{/if}}
-</div>
+{{#if saveable}}
+  <div class="actions">
+    <button type="button" tabindex=-1 class="save" title="Save field" {{action 'saveTerm'}} disabled={{disabled}}></button>
+    <button type="button" tabindex=-1 class="cancel" title="Reset field" {{action 'resetTerm'}} disabled={{disabled}}></button>
+  </div>
+{{/if}}
+
 
 {{#if displayDelete}}
   <button tabindex=-1 class="action remove" {{action 'deleteTerm'}} disabled={{disabled}}>

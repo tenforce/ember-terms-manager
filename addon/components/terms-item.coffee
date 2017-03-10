@@ -4,7 +4,8 @@
 TermsItemComponent = Ember.Component.extend(
   layout: layout
   classNames: ['term']
-  classNameBindings: ['focused:focus', 'dirtyOrNew', 'term.isDeleted:deleted', 'term.isSaved:saved', 'term.isLoading:loading']
+  classNameBindings: ['focused:focus', 'dirtyOrNew', 'term.isDeleted:deleted', 'savedAndNotDirty:saved',
+    'term.failedSave:failed', 'term.failedReload:failed', 'term.isLoading:loading']
 
   # whether changes are allowed
   disabled: false
@@ -33,6 +34,17 @@ TermsItemComponent = Ember.Component.extend(
   dirtyOrNew: Ember.computed 'dirty', 'term.isNew', ->
     if @get('term.isNew') then return "new"
     else if @get('dirty') then return "dirty"
+  savedAndNotDirty: Ember.computed 'term.isSaved', 'dirty', ->
+    return @get('term.isSaved') and not @get('dirty')
+
+  saveable: Ember.computed 'displayActionsTerm', 'displayActionsNewTerm', ->
+    if @get('term.isNew') then return @get('displayActionsNewTerm')
+    else return @get('displayActionsTerm')
+  displayActionsTerm: Ember.computed.alias 'dirty'
+  displayActionsNewTerm: Ember.computed 'term.literalForm.length', ->
+    debugger
+    if @get('term.literalForm.length') > 0 then return true
+    return false
 
   parseRolesFromString: (term) ->
     array = []
@@ -83,21 +95,13 @@ TermsItemComponent = Ember.Component.extend(
     index = @get('index')
 
     console.log "Handle saving of term"
-    @set('isSaved', false)
     term.save().then( (savedTerm) =>
       unless @get('isDestroyed')
         console.log "success on save"
-        @set('isSaved', true)
         if savedTerm.get('isDeleted')
           @sendAction('deletedTerm', savedTerm, name, index)
         else
           @sendAction('savedTerm', savedTerm, name, index)
-    ).catch( (error) =>
-      console.log "model failure on save"
-      unless @get('isDestroyed')
-        console.log "failed to save"
-        @set('isSaved', false)
-      throw error
     )
 
   resetAllClick: ->
@@ -110,6 +114,10 @@ TermsItemComponent = Ember.Component.extend(
     index = @get('index')
     console.log "Handle reset of term"
     if term.get('id') then term.reload()
+    else
+      term.set('literalForm', '')
+      term.set('roles', [])
+      term.set('source', undefined)
 
   actions:
     selectSuggestion: (suggestion) ->
