@@ -43,6 +43,11 @@ TermsItemComponent = Ember.Component.extend
   savedAndNotDirty: Ember.computed 'term.isSaved', 'dirty', ->
     return @get('term.isSaved') and not @get('dirty')
 
+  failed: Ember.computed.or 'term.failedSave', 'term.failedReload'
+  failedMessage: Ember.computed 'term.failedSave', 'term.failedReload', ->
+    if @get('term.failedSave') then return "An error occurred when saving this term"
+    if @get('term.failedReload') then return "An error occurred when reloading this term"
+    else return "An unknown error occurred"
   saveable: Ember.computed 'displayActionsTerm', 'displayActionsNewTerm', ->
     if @get('term.isNew') then return @get('displayActionsNewTerm')
     else return @get('displayActionsTerm')

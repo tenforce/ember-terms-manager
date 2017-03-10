@@ -22,6 +22,11 @@
 {{/if}}
 
 {{#if saveable}}
+  {{#if failed}}
+    <div class="error">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true" title={{failedMessage}}></i>
+    </div>
+  {{/if}}
   <div class="actions">
     <button type="button" tabindex=-1 class="save" title="Save field" {{action 'saveTerm'}} disabled={{shouldDisable}}></button>
     <button type="button" tabindex=-1 class="cancel" title="Reset field" {{action 'rollbackTerm'}} disabled={{shouldDisable}}></button>
