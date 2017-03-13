@@ -82,9 +82,13 @@ TermsItemComponent = Ember.Component.extend
     else return new Ember.RSVP.Promise =>
       return []
 
-    @get('roles')?.then (roles) =>
-      roles.forEach (role) =>
-        if array.contains(role.get('preflabel')) then @sendAction('toggleGender', term, role)
+    if @get('roles').then
+      @get('roles')?.then (roles) =>
+        roles.forEach (role) =>
+          if array.contains(role.get('preflabel')) then @sendAction('toggleGender', term, role)
+    else return new Ember.RSVP.Promise =>
+      @get('roles')?.forEach (role) =>
+          if array.contains(role.get('preflabel')) then @sendAction('toggleGender', term, role)
 
 
   saveAllClick: ->
