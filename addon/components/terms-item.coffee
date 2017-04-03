@@ -30,6 +30,9 @@ TermsItemComponent = Ember.Component.extend
   # boolean to toggle / untoggle sources
   toggledSuggestions: false
 
+  # whether the action buttons should be displayed
+  displayActions: true
+
   # checks whether the term is dirty (make sure the model has this property)
   dirty: Ember.computed 'term.dirty', ->
     if @get('term.dirty') is true then return true
@@ -48,11 +51,11 @@ TermsItemComponent = Ember.Component.extend
     if @get('term.failedSave') then return "An error occurred when saving this term"
     if @get('term.failedReload') then return "An error occurred when reloading this term"
     else return "An unknown error occurred"
-  saveable: Ember.computed 'displayActionsTerm', 'displayActionsNewTerm', ->
-    if @get('term.isNew') then return @get('displayActionsNewTerm')
-    else return @get('displayActionsTerm')
-  displayActionsTerm: Ember.computed.alias 'dirty'
-  displayActionsNewTerm: Ember.computed 'term.literalForm.length', ->
+  saveable: Ember.computed 'shouldDisplayActionsTerm', 'shouldDisplayActionsNewTerm', ->
+    if @get('term.isNew') then return @get('shouldDisplayActionsNewTerm')
+    else return @get('shouldDisplayActionsTerm')
+  shouldDisplayActionsTerm: Ember.computed.alias 'dirty'
+  shouldDisplayActionsNewTerm: Ember.computed 'term.literalForm.length', ->
     if @get('term.literalForm.length') > 0 then return true
     return false
 

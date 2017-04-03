@@ -2,12 +2,12 @@
 <div class="block-content">
   {{#each (if terms.then (await terms) terms) as |term index|}}
     {{terms-item term=term index=index roles=roles name=name suggestions=suggestions displaySource=displaySource placeholder=placeholder
-    displayDelete=displayDelete displaySuggestions=displaySuggestions toggleGender="toggleGender" saveTerm="saveTerm"
+    displayDelete=displayDelete displaySuggestions=displaySuggestions displayActions=displayActions toggleGender="toggleGender" saveTerm="saveTerm"
     rollbackTerm="rollbackTerm" deleteTerm="deleteTerm" disabled=disabled}}
   {{/each}}
   {{#if displayNewTerm}}
     {{terms-item term=newTerm index="new" roles=roles name=name suggestions=suggestions displaySource=displayNewSource placeholder=newPlaceholder
-    displayDelete=displayNewDelete displaySuggestions=displayNewSuggestions toggleGender="toggleGender" saveTerm="saveNewTerm"
+    displayDelete=displayNewDelete displaySuggestions=displayNewSuggestions displayActions=displayActions toggleGender="toggleGender" saveTerm="saveNewTerm"
     rollbackTerm="rollbackTerm" disabled=disabled}}
   {{/if}}
 </div>
