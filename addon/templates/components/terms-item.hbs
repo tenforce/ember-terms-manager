@@ -21,7 +21,7 @@
   </div>
 {{/if}}
 
-{{#if saveable}}
+{{#if (and displayActions saveable)}}
   {{#if failed}}
     <div class="error">
       <i class="fa fa-exclamation-triangle" aria-hidden="true" title={{failedMessage}}></i>

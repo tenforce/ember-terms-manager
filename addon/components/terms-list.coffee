@@ -28,6 +28,9 @@ TermsListComponent = Ember.Component.extend(
   placeholder: "e.g., \"actress//sf\" and confirm with ENTER"
   newPlaceholder: "e.g., \"actress//sf\" and confirm with ENTER"
 
+  # whether the action buttons should be displayed
+  displayActions: true
+
 
   actions:
     toggleGender: (term, role, name, index) ->
