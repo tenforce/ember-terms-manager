@@ -85,6 +85,7 @@ TermsItemComponent = Ember.Component.extend
     else return new Ember.RSVP.Promise =>
       return []
 
+    # if roles is not a promise, we create a new one so that consumers of this function can '.then' it
     if @get('roles').then
       @get('roles')?.then (roles) =>
         roles.forEach (role) =>
