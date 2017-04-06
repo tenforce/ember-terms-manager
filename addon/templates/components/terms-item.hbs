@@ -15,7 +15,7 @@
     {{#each (if roles.then (await roles) roles) as |role roleindex|}}
       <button tabindex=-1 disabled={{shouldDisable}} {{action 'toggleGender' role}}
           class="gender {{if (term-has-role term=term role=role roles=term.roles isReloading=term.isReloading) 'active'}}">
-        {{role.preflabel}}
+        {{role.displayLabel}}
       </button>
     {{/each}}
   </div>
