@@ -59,6 +59,9 @@ TermsItemComponent = Ember.Component.extend
     if @get('term.literalForm.length') > 0 then return true
     return false
 
+  emptyRoles: Ember.computed 'roles', ->
+    return !(@get('roles.length') > 0)
+
   parseRolesFromString: (term) ->
     array = []
     literalform = term.get('literalForm')
@@ -85,14 +88,8 @@ TermsItemComponent = Ember.Component.extend
     else return new Ember.RSVP.Promise =>
       return []
 
-    # if roles is not a promise, we create a new one so that consumers of this function can '.then' it
-    if @get('roles').then
-      @get('roles')?.then (roles) =>
-        roles.forEach (role) =>
-          if array.contains(role.get('preflabel')) then @sendAction('toggleGender', term, role, @get('name'), @get('index'))
-    else return new Ember.RSVP.Promise =>
-      @get('roles')?.forEach (role) =>
-          if array.contains(role.get('preflabel')) then @sendAction('toggleGender', term, role, @get('name'), @get('index'))
+    @get('roles')?.forEach (role) =>
+      if array.contains(role.get('preflabel')) then @sendAction('toggleGender', term, role, @get('name'), @get('index'))
 
 
   saveAllClick: ->

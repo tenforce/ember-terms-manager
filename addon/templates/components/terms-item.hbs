@@ -10,9 +10,9 @@
 
 {{#if loadingRoles}}
   <div class="button-group"><i class="fa fa-spinner fa-pulse"></i></div>
-{{else}}
+{{else unless emptyRoles}}
   <div class="button-group">
-    {{#each (if roles.then (await roles) roles) as |role roleindex|}}
+    {{#each roles as |role roleindex|}}
       <button tabindex=-1 disabled={{shouldDisable}} {{action 'toggleGender' role}}
           class="gender {{if (term-has-role term=term role=role roles=term.roles isReloading=term.isReloading) 'active'}}">
         {{role.displayLabel}}
