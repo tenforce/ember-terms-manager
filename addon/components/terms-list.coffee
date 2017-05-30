@@ -30,6 +30,8 @@ TermsListComponent = Ember.Component.extend(
 
   # whether the action buttons should be displayed
   displayActions: true
+  # whether the action buttons should be displayed for new terms
+  displayNewActions: Ember.computed.oneWay 'displayActions'
 
 
   actions:
