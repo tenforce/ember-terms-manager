@@ -9,7 +9,18 @@ TermsItemComponent = Ember.Component.extend
   nameIndex: Ember.computed 'name', 'index', ->
     return "#{@get('name')}#{@get('index')}"
 
-  # whether changes are allowed
+  saveAllButton: Ember.inject.service()
+  
+  init: ->
+    @_super()
+    @get('saveAllButton').subscribe(@)
+    @ensureLoadedRoles()
+
+  willDestroyElement: ->
+    @_super()
+    @get('saveAllButton').unsubscribe(@)
+
+# whether changes are allowed
   disabled: false
   shouldDisable: Ember.computed 'loading', 'disabled', ->
     return @get('disabled') or @get('loading')
@@ -124,12 +135,6 @@ TermsItemComponent = Ember.Component.extend
     name = @get('name')
     index = @get('index')
     @sendAction('toggleGender', term, role, name, index)
-
-  saveAllButton: Ember.inject.service()
-  init: ->
-    @_super()
-    @get('saveAllButton').subscribe(@)
-    @ensureLoadedRoles()
 
   loadingRoles: true
   ensureLoadedRoles: ->
