@@ -10,7 +10,7 @@ TermsItemComponent = Ember.Component.extend
     return "#{@get('name')}#{@get('index')}"
 
   saveAllButton: Ember.inject.service()
-  
+
   init: ->
     @_super()
     @get('saveAllButton').subscribe(@)
